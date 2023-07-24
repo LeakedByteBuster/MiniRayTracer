@@ -6,7 +6,7 @@
 /*   By: mfouadi <mfouadi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:48:38 by mfouadi           #+#    #+#             */
-/*   Updated: 2023/07/22 19:43:46 by mfouadi          ###   ########.fr       */
+/*   Updated: 2023/07/24 21:23:13 by mfouadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ static double
 	t = 0.0;
 	sol->t1 = (-sol->b - sqrt(sol->delta)) / (2 * sol->a);
 	sol->t2 = (-sol->b + sqrt(sol->delta)) / (2 * sol->a);
-	m[0] = (dot_prod(utils->ray.direction, vecxnum(cyl->nvec, sol->t1))) \
-		+ dot_prod(x, cyl->nvec);
-	m[1] = (dot_prod(utils->ray.direction, vecxnum(cyl->nvec, sol->t2))) \
-		+ dot_prod(x, cyl->nvec);
+	m[0] = (dot_prod(utils->ray.direction, vecxnum(normvec(cyl->nvec), sol->t1))) \
+		+ dot_prod(x, normvec(cyl->nvec));
+	m[1] = (dot_prod(utils->ray.direction, vecxnum(normvec(cyl->nvec), sol->t2))) \
+		+ dot_prod(x, normvec(cyl->nvec));
 	if (sol->t2 < EPS)
 		return (false);
 	if (((m[0] >= EPS) && (m[0] < cyl->height)))
@@ -64,11 +64,11 @@ static bool	fill_t(t_utils *utils, t_cylinder *cyl, t_vec x, double t)
 	utils->t.color = cyl->color;
 	utils->t.center = cyl->center;
 	m = dot_prod(utils->ray.direction, \
-		vecxnum(cyl->nvec, t)) + dot_prod(x, cyl->nvec);
+		vecxnum(normvec(cyl->nvec), t)) + dot_prod(x, normvec(cyl->nvec));
 	utils->t.inter = vecadd(utils->ray.origin, \
 		vecxnum(utils->ray.direction, t));
 	utils->t.norm = normvec(vecsub(vecadd(\
-		vecxnum(utils->ray.direction, t), x), vecxnum(cyl->nvec, m)));
+		vecxnum(utils->ray.direction, t), x), vecxnum(normvec(cyl->nvec), m)));
 	return (true);
 }
 
@@ -81,10 +81,10 @@ bool	ray_cylinder_intersection(t_utils *utils, t_cylinder *cyl)
 	t = 0.0;
 	x = vecsub(utils->ray.origin, cyl->center);
 	sol.a = dot_prod(utils->ray.direction, utils->ray.direction) - \
-		pow(dot_prod(utils->ray.direction, cyl->nvec), 2);
+		pow(dot_prod(utils->ray.direction, normvec(cyl->nvec)), 2);
 	sol.b = 2 * (dot_prod(utils->ray.direction, x) \
-		- (dot_prod(utils->ray.direction, cyl->nvec) * dot_prod(x, cyl->nvec)));
-	sol.c = dot_prod(x, x) - pow(dot_prod(x, cyl->nvec), 2) \
+		- (dot_prod(utils->ray.direction, normvec(cyl->nvec)) * dot_prod(x, normvec(cyl->nvec))));
+	sol.c = dot_prod(x, x) - pow(dot_prod(x, normvec(cyl->nvec)), 2) \
 		- pow(cyl->diam / 2, 2);
 	sol.delta = (sol.b * sol.b) - (4 * sol.a * sol.c);
 	if (sol.delta >= EPS)
