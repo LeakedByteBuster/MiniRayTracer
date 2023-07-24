@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: absaid <absaid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfouadi <mfouadi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:46:23 by absaid            #+#    #+#             */
-/*   Updated: 2023/06/06 11:05:08 by absaid           ###   ########.fr       */
+/*   Updated: 2023/07/22 18:28:12 by mfouadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@
 # include <unistd.h>
 # include <string.h>
 # include "get_next_line.h"
+# include "../libgc/gc.h"
 
 typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
 }	t_list;
+
 int		ft_isalnum(int c);
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);

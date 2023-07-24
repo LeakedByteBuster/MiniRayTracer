@@ -6,58 +6,40 @@
 /*   By: mfouadi <mfouadi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 07:56:30 by absaid            #+#    #+#             */
-/*   Updated: 2023/07/11 07:54:28 by mfouadi          ###   ########.fr       */
+/*   Updated: 2023/07/22 17:01:53 by mfouadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include "parser.h"
 
-/*
-	• Allowed functions :
-		open, close, read, write,
-		printf, malloc, free, perror,
-		strerror, exit
-	• All functions of the math library (-lm man man 3 math)
-	• All functions of the MinilibX
-*/
-
-int checkfile(char *file)
+static void	init_mlx_window(t_mlx *mlx)
 {
-	int len;
-
-	len = ft_strlen(file) - 3;
-	if (ft_strncmp(file + len, ".rt", 3))
-		return (-1);
-	return (open(file, O_RDONLY));
+	mlx->mlx = mlx_init();
+	mlx->win = mlx_new_window(mlx->mlx, WIDTH, HEIGHT, "minirt");
+	mlx->img->img = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
+	mlx->img->addr = mlx_get_data_addr(mlx->img->img, \
+		&mlx->img->bits_per_pixel, &mlx->img->line_length, &mlx->img->endian);
+	return ;
 }
 
-// Initilizes mlx params;
-void	initdata(t_data *data)
-{
-	data->amlight = NULL;
-	data->cam = NULL;
-	data->cyl = NULL;
-	data->pl = NULL;
-	data->sph = NULL;
-	data->lights = NULL;
-}
-
-/* ************************************************************************** */
-/*							TODO LIST										  */
-/* ************************************************************************** */
+/* ***************************************************************************/
+/*							TODO LIST										 */
+/* ***************************************************************************/
 /*
-	// TODO : There are some maps that have an xpm file for texture
-	// TODO :  'tx'...
-	// TODO : Handle problem of parsing 255,,,,,255,255
-	// TODO: Freeing the 3 double pointers?? parsecy(), parsepl()...
-	// TODO: Freeing the pointer in the inner while?? rt_parsing
-
+	// TODO : Elements which are defined by a capital letter 
+		can only be declared once in
+	// TODO : check overflow in atod
+	// TODO : 
 */
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-	int fd;
-	t_data data;
+	int		fd;
+	t_data	data;
+	t_utils	utils;
+	t_img	img;
+	t_mlx	mlx;
 
 	if (ac != 2)
 		ft_error("Invalid Arguments", 1, 0);
@@ -67,6 +49,9 @@ int main(int ac, char **av)
 	initdata(&data);
 	rt_parsing(&data, fd);
 	check_ranges(&data);
-	// printdata(&data);
-	rt_rendering(&data);
+	mlx.img = &img;
+	init_mlx_window(&mlx);
+	rt_rendering(&data, &utils, &mlx);
+	gc(0, 0);
+	return (0);
 }

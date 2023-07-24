@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: absaid <absaid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfouadi <mfouadi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 08:56:33 by absaid            #+#    #+#             */
-/*   Updated: 2023/05/30 10:55:15 by absaid           ###   ########.fr       */
+/*   Updated: 2023/07/22 18:28:02 by mfouadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,6 @@ char	*get_next_line(int fd)
 	if (!hold)
 		return (NULL);
 	if (!*hold)
-		return(free(hold), hold = NULL, NULL);
+		return (free(hold), hold = NULL, NULL);
 	return (line = get_line(hold), hold = update_hold(hold), line);
 }

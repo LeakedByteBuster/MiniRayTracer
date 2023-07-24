@@ -6,7 +6,7 @@
 /*   By: absaid <absaid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 05:48:58 by absaid            #+#    #+#             */
-/*   Updated: 2022/10/21 05:08:03 by absaid           ###   ########.fr       */
+/*   Updated: 2023/07/22 15:50:43 by absaid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*ft_itoa(int n)
 		return (ft_strdup("0"));
 	i = count(n);
 	nb = n;
-	str = malloc(sizeof (char) * (i + 1));
+	str = gc(sizeof (char) * (i + 1), 0);
 	if (!str)
 		return (str);
 	str[i] = '\0';

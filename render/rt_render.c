@@ -6,65 +6,79 @@
 /*   By: mfouadi <mfouadi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 11:55:32 by absaid            #+#    #+#             */
-/*   Updated: 2023/07/11 08:29:57 by mfouadi          ###   ########.fr       */
+/*   Updated: 2023/07/22 19:15:00 by mfouadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt_render.h"
+#include "minirt.h"
+#include "screen.h"
 
-static void	camera_orientation(t_data *data)
+static int	destroy_window(t_mlx *mlx)
 {
-	data->cam->forvec = normvec(data->cam->forvec);
-	data->cam->sidevec = cross_prod((t_vec){0, 1, 0}, data->cam->forvec);
-	if(!data->cam->sidevec.x && !data->cam->sidevec.y && !data->cam->sidevec.z)
-		data->cam->sidevec = cross_prod((t_vec){1, 0, 0},  data->cam->forvec);
-	data->cam->sidevec = normvec(data->cam->sidevec);
-	data->cam->upvec = cross_prod(data->cam->sidevec, data->cam->forvec);
-	data->cam->upvec = normvec(data->cam->upvec);
+	mlx_destroy_window(mlx->mlx, mlx->win);
+	exit(0);
+}
+
+static int	key_hook_handler(int key, t_mlx *mlx)
+{
+	if (key == 53)
+	{
+		mlx_destroy_window(mlx->mlx, mlx->win);
+		exit(0);
+	}
+	return (0);
+}
+
+static void	camera_orientation(t_cam *cam)
+{
+	if (!cam)
+		return ;
+	cam->forvec = normvec(cam->forvec);
+	cam->sidevec = cross_prod((t_vec){0, 1, 0}, cam->forvec);
+	if (!cam->sidevec.x && !cam->sidevec.y && !cam->sidevec.z)
+		cam->sidevec = cross_prod((t_vec){1, 0, 0}, cam->forvec);
+	cam->sidevec = normvec(cam->sidevec);
+	cam->upvec = cross_prod(cam->sidevec, cam->forvec);
+	cam->upvec = normvec(cam->upvec);
 	return ;
 }
 
 static void	init_new_size(t_mlx	*mlx, t_data *data)
 {
-	double angle;
-	
-	camera_orientation(data);
-	angle = data->cam->FOV * M_PI / 180;
+	double	angle;
+
+	if (!data->cam || !mlx)
+		return ;
+	camera_orientation(data->cam);
+	angle = data->cam->fov * M_PI / 180;
 	mlx->n_width = tan(angle / 2);
 	mlx->n_height = HEIGHT * mlx->n_width / WIDTH;
-	printf("NW->%f, NH->%f\n",mlx->n_width, mlx->n_height);
 }
 
-void	rt_rendering(t_data *data)
+void	rt_rendering(t_data *data, t_utils *utils, t_mlx *mlx)
 {
-	t_utils	utils;
-	int		i;
-	int		j;
+	int	color;
+	int	i;
+	int	j;
 
 	j = -1;
-	utils.mlx.mlx = mlx_init();
-	utils.mlx.win = mlx_new_window(utils.mlx.mlx, WIDTH, HEIGHT, "minirt");
-	init_new_size(&utils.mlx, data);
-	while(++j <= HEIGHT)
+	init_new_size(mlx, data);
+	while (++j < HEIGHT)
 	{
 		i = -1;
-		while(++i <= WIDTH)
+		while (++i < WIDTH)
 		{
-			utils.T.t = -1;
-			utils.T.color = data->amlight->color;
-			utils.ray = gc(sizeof(t_ray), 1);
-			utils.ray = ft_ray(data->cam, i, j, &utils.mlx, utils.ray);
-			find_intersections_with_objects(data, &utils);
-			int color =  (int)(utils.T.color.x) << 16 |(int)utils.T.color.y << 8 | (int)utils.T.color.z;
-			mlx_pixel_put(utils.mlx.mlx, utils.mlx.win, i, j, color);
+			utils->t.t = -1;
+			utils->t.color = (t_color){0, 0, 0};
+			ft_ray(data->cam, (int []){i, j}, mlx, &utils->ray);
+			find_intersections_with_objects(data, utils);
+			color = (int)(utils->t.color.x) << 16 | \
+				(int)utils->t.color.y << 8 | (int)utils->t.color.z;
+			put_pixel_on_image(mlx->img, i, j, color);
 		}
 	}
-	mlx_loop(utils.mlx.mlx);
+	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img->img, 0, 0);
+	mlx_hook(mlx->win, DESTROY, 0, destroy_window, mlx);
+	mlx_hook(mlx->win, KEYBOARD, 0, key_hook_handler, mlx->mlx);
+	mlx_loop(mlx->mlx);
 }
-
-/*
-	// there is a diffuse : diff = dot * light->col * light->ratio
-	// so col  = amb * amb->ratio + col->obj + diffuse
-	// T->color = dot * l->color * l->range +  am->color * am->range + sp->color
-	// no diffuse so , col = amb * ratio + obj->col	
-*/

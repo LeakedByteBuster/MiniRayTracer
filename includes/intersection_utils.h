@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   intersection_utils.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: absaid <absaid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfouadi <mfouadi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/18 07:25:51 by absaid            #+#    #+#             */
-/*   Updated: 2023/07/22 15:51:00 by absaid           ###   ########.fr       */
+/*   Created: 2023/07/19 08:56:32 by mfouadi           #+#    #+#             */
+/*   Updated: 2023/07/22 17:11:59 by mfouadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"libft.h"
+#ifndef INTERSECTION_UTILS_H
+# define INTERSECTION_UTILS_H
 
-t_list	*ft_lstnew(void *content)
+# include "vectors.h"
+
+typedef struct s_eq2d
 {
-	t_list	*node;
+	double	a;
+	double	b;
+	double	c;
+	double	t1;
+	double	t2;
+	double	delta;
+}	t_eq2d;
 
-	node = gc(sizeof (t_list), 0);
-	if (!node)
-		return (NULL);
-	node -> content = content;
-	node -> next = NULL;
-	return (node);
-}
+#endif // INTERSECTIONS_UTILS_H

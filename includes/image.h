@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   image.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: absaid <absaid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfouadi <mfouadi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/18 07:25:51 by absaid            #+#    #+#             */
-/*   Updated: 2023/07/22 15:51:00 by absaid           ###   ########.fr       */
+/*   Created: 2023/07/19 11:17:25 by mfouadi           #+#    #+#             */
+/*   Updated: 2023/07/22 17:11:14 by mfouadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"libft.h"
+#ifndef IMAGE_H
+# define IMAGE_H
 
-t_list	*ft_lstnew(void *content)
+typedef struct s_mlx_image
 {
-	t_list	*node;
+	char	*addr;
+	void	*img;
+	int		bits_per_pixel;
+	int		endian;
+	int		line_length;
+}	t_img;
 
-	node = gc(sizeof (t_list), 0);
-	if (!node)
-		return (NULL);
-	node -> content = content;
-	node -> next = NULL;
-	return (node);
-}
+#endif // IMAGE_H

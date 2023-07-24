@@ -6,7 +6,7 @@
 /*   By: mfouadi <mfouadi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 10:55:28 by absaid            #+#    #+#             */
-/*   Updated: 2023/07/11 07:42:01 by mfouadi          ###   ########.fr       */
+/*   Updated: 2023/07/22 18:27:47 by mfouadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static int	count_words(char *str, char *c)
 	return (count);
 }
 
-
 char	**ft_split(char const *s, char *c, int mode)
 {
 	char	**p;
@@ -46,17 +45,17 @@ char	**ft_split(char const *s, char *c, int mode)
 	l = -1;
 	if (!s)
 		return (NULL);
-	p = (char **)malloc(sizeof (char *) * (count_words((char *)s, c) + 1));
+	p = gc(sizeof (char *) * (count_words((char *)s, c) + 1), 1);
 	while (++l < count_words((char *)s, c))
 	{	
 		while (s[i] && ft_strchr(c, s[i]))
 		{
-			if(mode && ft_strchr(c, s[i]) && ft_strchr(c, s[i + 1]))
-				return(ft_error_split("Error : ft_split\n", 1, 0), NULL);
+			if (mode && ft_strchr(c, s[i]) && ft_strchr(c, s[i + 1]))
+				return (ft_error_split("Error : ft_split\n", 1, 0), NULL);
 			i++;
 		}
 		j = i;
-		while ( s[i] && !ft_strchr(c, s[i]) )
+		while (s[i] && !ft_strchr(c, s[i]))
 			i++;
 		p[l] = ft_substr(s, j, i - j);
 	}

@@ -6,7 +6,7 @@
 /*   By: absaid <absaid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 06:08:12 by absaid            #+#    #+#             */
-/*   Updated: 2023/05/30 11:03:29 by absaid           ###   ########.fr       */
+/*   Updated: 2023/07/22 16:03:24 by absaid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	*gc(size_t size, int param)
 		address = malloc(size);
 		if (!address)
 			return (ft_gcclear(&head), exit(1), NULL);
+		gcadd_front(&head, ft_gcnew(address));
 		return (address);
 	}
 	(!param) && (ft_gcclear(&head), exit(1), 0);

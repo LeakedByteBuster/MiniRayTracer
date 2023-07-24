@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   vector_calculations_2.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: absaid <absaid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfouadi <mfouadi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/18 07:25:51 by absaid            #+#    #+#             */
-/*   Updated: 2023/07/22 15:51:00 by absaid           ###   ########.fr       */
+/*   Created: 2023/07/22 16:48:16 by mfouadi           #+#    #+#             */
+/*   Updated: 2023/07/22 16:49:46 by mfouadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"libft.h"
+#include "vectors.h"
+#include <math.h>
 
-t_list	*ft_lstnew(void *content)
+double	lengthvec(t_vec v)
 {
-	t_list	*node;
+	return (sqrt(dot_prod(v, v)));
+}
 
-	node = gc(sizeof (t_list), 0);
-	if (!node)
-		return (NULL);
-	node -> content = content;
-	node -> next = NULL;
-	return (node);
+t_vec	normvec(t_vec v)
+{
+	return (vecxnum(v, 1 / lengthvec(v)));
 }

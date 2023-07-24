@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   camera.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: absaid <absaid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfouadi <mfouadi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/18 07:25:51 by absaid            #+#    #+#             */
-/*   Updated: 2023/07/22 15:51:00 by absaid           ###   ########.fr       */
+/*   Created: 2023/07/19 08:35:05 by mfouadi           #+#    #+#             */
+/*   Updated: 2023/07/22 17:09:01 by mfouadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"libft.h"
+#ifndef CAMERA_H
+# define CAMERA_H
 
-t_list	*ft_lstnew(void *content)
+# include "vectors.h"
+
+typedef struct s_cam
 {
-	t_list	*node;
+	int		type;
+	t_point	center;
+	t_vec	forvec;
+	t_vec	sidevec;
+	t_vec	upvec;
+	int		fov;
+}	t_cam;
 
-	node = gc(sizeof (t_list), 0);
-	if (!node)
-		return (NULL);
-	node -> content = content;
-	node -> next = NULL;
-	return (node);
-}
+#endif // CAMERA_H

@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   screen.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: absaid <absaid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfouadi <mfouadi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/18 07:25:51 by absaid            #+#    #+#             */
-/*   Updated: 2023/07/22 15:51:00 by absaid           ###   ########.fr       */
+/*   Created: 2023/07/19 08:37:12 by mfouadi           #+#    #+#             */
+/*   Updated: 2023/07/22 18:22:38 by mfouadi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"libft.h"
+#ifndef SCREEN_H
+# define SCREEN_H
 
-t_list	*ft_lstnew(void *content)
+# include "image.h"
+
+typedef struct s_mlx
 {
-	t_list	*node;
+	void		*mlx;
+	void		*win;
+	t_img		*img;
+	double		n_width;
+	double		n_height;
+	double		pixel;
+}	t_mlx;
 
-	node = gc(sizeof (t_list), 0);
-	if (!node)
-		return (NULL);
-	node -> content = content;
-	node -> next = NULL;
-	return (node);
-}
+#endif // SCREEN_H
